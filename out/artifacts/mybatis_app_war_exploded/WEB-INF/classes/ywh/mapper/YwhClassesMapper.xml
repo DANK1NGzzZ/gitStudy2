@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ywh.mapper.YwhClassesMapper">
+<select id="findClassesById" resultMap="classesResult" parameterType="int">
+
+select c.id cid,c.name cname, s.id sid, s.name sname,s.age sage from classes c,student s where c.id = s.cid and cid = #{cid};
+</select>
+    <resultMap id="classesResult" type="Classes">
+        <id column="cid" property="id"></id>
+        <result column="cname" property="name"></result>
+        <collection property="students" ofType="Student">
+            <id column="sid" property="id"></id>
+            <result column="sname" property="name"></result>
+            <result column="sage" property="age"></result>
+        </collection>
+    </resultMap>
+</mapper>

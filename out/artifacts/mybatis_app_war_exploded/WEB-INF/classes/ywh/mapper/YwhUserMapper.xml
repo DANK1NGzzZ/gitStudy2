@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ywh.mapper.YwhUserMapper">
+    <!-- 字段 -->
+    <sql id="Field">
+        id,
+        user_name,
+        nick_name,
+        password,
+        status,
+        email,
+        phonenumber,
+        sex,
+        avatar,
+        user_type,
+        create_by,
+        create_time,
+        update_by ,
+        update_time,
+        del_flag
+    </sql>
+
+    <!-- 字段值 -->
+    <sql id="FieldValue">
+        #{id},
+        #{userName},
+        #{nickName},
+        #{password},
+        #{status},
+        #{email},
+        #{phonenumber},
+        #{sex},
+        #{avatar},
+        #{userType},
+        #{createBy},
+        #{createTime},
+        #{updateBy },
+        #{updateTime},
+        #{delFlag}
+    </sql>
+
+    <!--查询用户的账号是否存在-->
+    <select id="queryUserByName" parameterType="String" resultType="Sys_user">
+        select <include refid="Field"></include>  from sys_user where user_name = #{user_name}
+    </select>
+
+    <!--新增-注册用户-->
+    <insert id="register" parameterType="Sys_user">
+        insert into sys_user(<include refid="Field"></include> )
+        values (<include refid="FieldValue"></include>);
+    </insert>
+
+    <resultMap id="userRoleMap" type="sys_user">
+        <id property="id" column="id"></id>
+        <result column="user_name" property="userName"/>
+        <collection property="roles" ofType="Sys_role">
+            <id property="id" column="rid"></id>
+            <result column="rname" property="name"/>
+        </collection>
+    </resultMap>
+
+    <!--登录-->
+    <select id="login" parameterType="java.util.Map"  resultMap="userRoleMap">
+        SELECT a.id , a.user_name ,c.id rid, c.name rname
+        FROM sys_user a
+                 LEFT JOIN sys_user_role b
+                           on a.id = b.user_id
+                 LEFT JOIN  sys_role c
+                            on c.id = b.role_id
+        where a.user_name = #{user_name}
+          and a.password = #{password}
+    </select>
+</mapper>

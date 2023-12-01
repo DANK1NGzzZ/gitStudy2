@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ywh.mapper.YwhEndRoleMapper">
+
+    <resultMap id="ywh_end_roleResult" type="Ywh_end_role">
+        <id column="rid" property="id"></id>
+        <result column="rname" property="name"></result>
+        <collection property="Ywh_end_users" ofType="Ywh_end_user">
+            <id column="uid" property="id"></id>
+            <result column="uname" property="name"></result>
+            <result column="usex" property="sex"></result>
+        </collection>
+    </resultMap>
+    <select id="findYwh_end_role_ById" resultMap="ywh_end_roleResult">
+select u.id uid, u.name uname, u.sex usex,r.id rid, r.name rname from ywh_end_user u,ywh_end_role r, ywh_end_user_role ur
+ where u.id = ur.user_id and r.id = ur.role_id and r.id = #{rid};
+</select>
+
+</mapper>

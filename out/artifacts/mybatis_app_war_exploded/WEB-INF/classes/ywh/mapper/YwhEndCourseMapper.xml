@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ywh.mapper.YwhEndCourseMapper">
+
+    <resultMap id="ywh_end_menuResult" type="Ywh_end_menu">
+        <id column="mid" property="id"></id>
+        <result column="mname" property="name"></result>
+        <result column="mpath" property="path"></result>
+        <collection property="Ywh_end_roles" ofType="Ywh_end_role">
+            <id column="rid" property="id"></id>
+            <result column="rname" property="name"></result>
+        </collection>
+        <collection property="Ywh_end_users" ofType="Ywh_end_user">
+            <id column="uid" property="id"></id>
+            <result column="uname" property="name"></result>
+            <result column="usex" property="sex"></result>
+        </collection>
+    </resultMap>
+   <!-- <select id="findYwh_end_menu_ById" resultMap="ywh_end_menuResult">
+select r.id rid, r.name rname, m.id mid, m.name mname, m.path mpath from ywh_end_role r,ywh_end_menu m, ywh_end_role_menu rm
+where r.id = rm.role_id and m.id = rm.menu_id and m.id = #{mid}
+</select> !-->
+
+
+    <select id="findYwh_end_menu_ById" resultMap="ywh_end_menuResult" >
+select u.id uid, u.name uname, u.sex usex, r.name rname, m.name mname, m.path mpath
+from ywh_end_user u, ywh_end_role r, ywh_end_menu m , ywh_end_role_menu rm, ywh_end_user_role ur
+where u.id = ur.user_id and ur.role_id = rm.role_id and rm.menu_id = m.id and r.id = ur.role_id  and u.`id` =#{uid};
+</select>
+</mapper>

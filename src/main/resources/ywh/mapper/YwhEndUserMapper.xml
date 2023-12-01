@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ywh.mapper.YwhEndUserMapper">
+    <!-- 字段 -->
+    <sql id="Field">
+        id;
+        name;
+        password;
+        sex;
+        phonenumber;
+        email;
+
+    </sql>
+
+    <!-- 字段值 -->
+    <sql id="FieldValue">
+        #{id},
+        #{name},
+        #{password},
+        #{sex},
+        #{phonenumber},
+        #{email},
+    </sql>
+
+    <!--查询用户的账号是否存在-->
+    <select id="queryUserByName" parameterType="String" resultType="Ywh_end_user">
+       select name  from ywh_end_user where name = #{name}
+        </select>
+
+    <!--新增-注册用户-->
+    <insert id="register" parameterType="Ywh_end_user">
+        insert into ywh_end_user(name,password)
+        values (#{name},#{password})
+    </insert>
+    <resultMap id="ywh_end_userResult" type="Ywh_end_user">
+        <id column="uid" property="id"></id>
+        <result column="uname" property="name"></result>
+        <result column="usex" property="sex"></result>
+        <result column="upassword" property="password"></result>
+        <collection property="Ywh_end_roles" ofType="Ywh_end_role">
+            <id column="rid" property="id"></id>
+            <result column="rname" property="name"></result>
+        </collection>
+        <collection property="Ywh_end_menus" ofType="Ywh_end_menu">
+            <result column="mname" property="name"></result>
+            <result column="mpath" property="path"></result>
+        </collection>
+    </resultMap>
+    <!-- <select id="findYwh_end_menu_ById" resultMap="ywh_end_menuResult">
+ select r.id rid, r.name rname, m.id mid, m.name mname, m.path mpath from ywh_end_role r,ywh_end_menu m, ywh_end_role_menu rm
+ where r.id = rm.role_id and m.id = rm.menu_id and m.id = #{mid}
+ </select> !-->
+
+
+    <!-- <select id="login" resultMap="ywh_end_userResult" >
+select u.id uid, u.name uname, u.sex usex,u.name rname, m.name mname, m.path mpath
+from ywh_end_user u, ywh_end_role r, ywh_end_menu m , ywh_end_role_menu rm, ywh_end_user_role ur
+where u.id = ur.user_id and ur.role_id = rm.role_id and rm.menu_id = m.id and r.id = ur.role_id  and u.`id` =#{uid};
+</select>!-->
+    <select id="login" resultMap="ywh_end_userResult" >
+select u.id uid, u.name , u.sex usex,u.password
+from ywh_end_user u
+where u.name = #{name} and u.password = #{password};
+</select>
+</mapper>
