@@ -54,7 +54,7 @@ public class YwhEndUserController {
     }
      * @return**/
 
-    @RequestMapping( "/register")
+  /*   @RequestMapping( "/register")
     public String register(String name,String password) {
         int isSuccess = ywhEndUserService.register(name,password);
 
@@ -77,7 +77,7 @@ public class YwhEndUserController {
         }
 
     }
-}
+}**/
 /**@RestController
  @RequestMapping("/auth")
  public class LoginController {
